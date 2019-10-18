@@ -1,0 +1,55 @@
+﻿Sprint 1 Plan
+Movie Night
+Motion Pic & Chill (MPC)
+Sprint Completion Date: Oct 20, 2019
+Revision Number: TBD
+Revision Date: TBD
+
+
+Goal: 
+Read from other movie database website’s API and fill out the web page with information
+
+
+Task listing:
+ As a user, I want to be able to see the new release movies as I enter the website 
+* Task: create a rough draft landing page (3-5hours)
+   * Header, Movie gallery, button for recommendation, navigation with user login option
+* Task: Work on AWS Server (48 hours)
+* Task: learn html, css, javascript, AWS, API
+ 
+As a user, I want to be able to search movies by their movie titles
+* Task: create search capabilities and search bar on main page (2 hours)
+   * No database yet so just create a search bar in navigation that will be able to search in time
+
+
+
+
+
+
+Team Roles:
+Babak: Product Owner
+Anna: Scrum Master
+Joe:
+Justine:
+
+
+
+
+Initial task assignment: 
+Babak: work on aws server
+Anna: landing page development
+Joe: Scrum Sprint Report
+Justine: landing page development 
+
+
+Initial burnup chart: https://docs.google.com/spreadsheets/d/1pOvRZIXmpnq7Owa7ocrIFvucnaXox8jVKvF3rbOK4hI/edit?usp=sharing
+
+
+Initial scrum board: 
+https://app.asana.com/0/1145025413855969/1145025413855969
+
+
+Scrum times: 
+Monday 4:00-4:30pm (TA)
+Wednesday 6pm-7pm
+Thursday 7pm-8pm
