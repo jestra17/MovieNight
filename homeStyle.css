@@ -1,6 +1,10 @@
 
 body{
-	background-color: #EEE;
+  /*background-color: #EEE;*/
+  background-image:url(theaterBackground.jpg);
+  background-size: contain;
+  background-attachment: fixed;
+  background-position: right;
 	font-family: Helvetica, Arial, Sans-serif;
 }
 
@@ -20,11 +24,12 @@ h1{
 	margin: 0 0 58px;
  }
 
+
  /*body{
    background: darkred;
  }*/
 #container{ 
-	background-color: white; 
+	background-color: #5E1313; 
 	width: 800px;
 	margin-left: auto; /* centers horizontaly */
 	margin-right: auto;
@@ -32,7 +37,9 @@ h1{
 
 #header{
 	background-color: darkblue;
-    background-image: url(https://cdn.pixabay.com/photo/2016/03/06/20/09/tail-lights-1241171_1280.jpg);
+  background-image: url(https://cdn.pixabay.com/photo/2016/03/06/20/09/tail-lights-1241171_1280.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
 	text-align: center;
 	padding: 10px;
 }
@@ -70,9 +77,23 @@ to prevent that use float */
 	padding: 10px;
 	background-color: #999;
 	color: white;
-	text-align: right;
+  text-align: right;
+  opacity: 0.5;
  }
  * {box-sizing:border-box}
+
+ /*Slideshow header*/
+ .slide-show-header{
+   background-color: black;
+   color: white;
+   font-size: 17px;
+   text-align: left;
+   opacity: 0.6;
+ }
+.h3-slide-show-header{
+  margin: 20px;
+  padding: 5px;
+}
 
 /* Slideshow container */
 .slideshow-container {
@@ -83,7 +104,7 @@ to prevent that use float */
 
 /* Hide the images by default */
 .mySlides {
-  display: none;
+display: none;
 }
 
 /* Next & previous buttons */
@@ -113,28 +134,9 @@ to prevent that use float */
   background-color: rgba(0,0,0,0.8);
 }
 
-/* Caption text */
-.text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-}
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-}
 
 /* The dots/bullets/indicators */
-.dot {
+.dot, .dot2{
   cursor: pointer;
   height: 15px;
   width: 15px;
@@ -165,4 +167,56 @@ to prevent that use float */
 @keyframes fade {
   from {opacity: .4}
   to {opacity: 1}
+}
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: black;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: right;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #ddd;
+  color: black;
+}
+
+
+/* Style the search box inside the navigation bar */
+.topnav input[type=text] {
+  float: left;
+  padding: 6px;
+  margin-top: 8px;
+  margin-left: 16px;
+  font-size: 17px;
+}
+
+.topnav .search-container button {
+  float: left;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
 }

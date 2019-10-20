@@ -1,20 +1,21 @@
 var slideIndex = 1;
-showSlides(slideIndex);
+showSlides(slideIndex, "mySlides", "dot");
+showSlides(slideIndex,"mySlides2","dot1")
 
 // Next/previous controls
-function plusSlides(n) {
-  showSlides(slideIndex += n);
+function plusSlides(n, slidesString, dotsString) {
+  showSlides(slideIndex += n, slidesString, dotsString);
 }
 
 // Thumbnail image controls
-function currentSlide(n) {
-  showSlides(slideIndex = n);
+function currentSlide(n, slidesString, dotsString) {
+  showSlides(slideIndex = n, slidesString, dotsString);
 }
 
-function showSlides(n) {
+function showSlides(n, slidesString, dotsString ) {
   var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
+  var slides = document.getElementsByClassName(slidesString);
+  var dots = document.getElementsByClassName(dotsString);
   if (n > slides.length) {slideIndex = 1}
   if (n < 1) {slideIndex = slides.length}
   for (i = 0; i < slides.length; i++) {
@@ -26,4 +27,5 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " active";
 }
+
 
