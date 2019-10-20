@@ -208,10 +208,11 @@ display: none;
 
 .topnav .search-container button {
   float: left;
-  padding: 6px 10px;
+  padding: 8px;
   margin-top: 8px;
   margin-right: 16px;
   background: #ddd;
+  color: black;
   font-size: 17px;
   border: none;
   cursor: pointer;
