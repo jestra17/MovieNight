@@ -1,0 +1,63 @@
+﻿Release Plan
+Product Name : Movie Night
+Team Name: Motion Pic & Chill  
+Release 1
+Release date: TBA
+Revision #: 2
+Revision Date: 10/21/2019
+
+
+Higher Level Goals
+* Read from other movie database website’s API and fill out the web page with information
+* Be able to enter at least 5 movie titles to be used to help suggest a movie to watch
+* Create a user profile in order to better recommend a movie
+
+
+User stories for release
+Sprint 1:
+* As a user, I want to be able to see the new release movies as I enter the website (2)
+* As a user, I want to be able to search movies by their movie title[a] (1)
+Sprint 2:
+* As a user, I want to be able to enter up to 5 movies into the movie recommender  (5)  
+* As a user I want to be able to search for movies (3)
+* As a user I want to be able to create an account (3)
+* As a user I want to be able to log in (3)
+Sprint 3:
+*  As a user, I want to be able to get a list of movie recommendations (20)
+*  As a user, I want to keep track of the movies I selected before and use it for the new search inquiry. (5)
+Sprint 4:
+*  As a user, when I search a movie I want to see information about the movie. (3)
+* As a user I want the home page to populate with movies that are popular in my country. (5)
+* As a user I want to be able to see a description of the movie I click on.(3)
+* As a user I want to be able to see a link to a trailer of the movie I clicked on. (5)  
+
+
+Product backlog: 
+* Show the websites where  the movie we recommend is streaming on, and the pricing of the movie
+*  As a user, I want to be able to see where I could go to watch the movie
+* Be able to auto-fill text of movie titles
+* As a user, I want to be able to not type the entire movie title and see suggestions for movie titles through autofill. 
+* Be able to show movie information about each movie
+* As a user, I want to be able to see a blurb of the movie description when I hover over the movie image. 
+
+
+Project Presentation
+
+
+https://docs.google.com/presentation/d/14YdMjc3vMPNb7PszppBHSb6GcIpWEC6YJ0ytz59OssU/edit?usp=sharing
+
+
+
+
+
+
+
+
+[a]0 freebie, already done 
+1 extra small
+ 2 small 
+3 medium 
+5 large 
+8 extra large 
+13 XXL 
+20/21 XXXL (huge)
