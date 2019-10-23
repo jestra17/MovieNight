@@ -1,0 +1,59 @@
+﻿Sprint 2 Plan
+Movie Night 
+Motion Pic & Chill (MCP) 
+Sprint Completion Date: Nov 3, 2019
+Revision Number: 
+Revision Date: 
+
+
+Goal: 
+* Be able to enter at least 5 movie titles to be used to help suggest a movie to watch
+
+
+Task listing:
+ As a user, I want to be able to enter up to 5 movies into the movie recommender  (5)  
+* Task: create movie recommendation page and connect it with home page (1 hr)
+* Task: connect database to the API (15 )
+* Task: Use database to populate website (10 ) 
+* Task: create a structure that holds up to 5 movies that user entered in a list format with movie poster thumbnails and title.  (1)
+* Task: Implement real time ability to alter(delete items) from list(1)
+As a user I want to be able to create an account (3)
+* Task: create sign up page (1)
+As a user I want to be able to log in (2) 
+* Task: implement user authentication(2)
+* Task: implement cookies/sessions (8) 
+
+
+Team Roles:
+Babak: Product Owner
+Anna: 
+Joe: Scrum Master
+Justine:
+
+
+
+
+Initial task assignment: 
+Anna, Justine: create movie recommendation page and connect it with home page (1 hr), create a structure that holds up to 5 movies that user entered in a list format with movie poster thumbnails and title.  (1)
+,create sign up page (1)
+implement user authentication(2)
+implement UI (the request object) render template, and dynamic design 
+Joe: implement cookies and sessions (8hours)
+Babak: Use database to populate website (10 hrs) , connect database to the API (15 hrs)
+
+
+Initial burnup chart: https://docs.google.com/spreadsheets/d/1pOvRZIXmpnq7Owa7ocrIFvucnaXox8jVKvF3rbOK4hI/edit?usp=sharing
+
+
+  
+
+
+
+Initial scrum board: 
+https://app.asana.com/0/1145025413855969/1145025413855969
+
+
+Scrum times: 
+Monday 4:00-4:30pm (TA)
+Wednesday 6pm-7pm
+Thursday 7pm-8pm
