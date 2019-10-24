@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Flask Tutorial</title>
+    <style>
+    .button {
+        border-radius: 4px;
+        background-color: darkblue;
+        border: none;
+        color: white;
+        /*text-align: center;*/
+        font-size: 28px;
+        padding: 20px;
+        width: 300px;
+        height: 100px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: auto;
+        display: block;
+        margin-top: 100px;
+        margin-bottom: 100px;
+        /*margin: 55px 10px 100px 100px;*/
+      
+      
+      }
+      
+      .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+      }
+      
+      .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+      
+      .button:hover span {
+        padding-right: 25px;
+      }
+      
+      .button:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+      </style>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+    
+    <div id="container">
+		<div id = "header">
+				<h1> Tonight at the movies..</h1>
+			</div>
+			<div id= "content">
+				<div class="topnav">
+					<a class="active" href="#home">Home</a>
+					<a href="#sign-in">Sign-in</a>
+					<a href="#sign-up">Sign-up</a>
+					<div class="search-container">
+							<form action="#">
+							  <input type="text" placeholder="Search.." name="search">
+							  <button type="submit"><i class="fa fa-search"></i></button>
+							</form>
+						  </div>
+				</div>
+              
+              <div >
+
+				<button class="button"><span> Help me pick a movie!</span></button>
+				<!--Slideshow description-->
+				<div class="slide-show-header">
+					<h3 class= "h3-slide-show-header">New Releases</h3>
+				</div>
+				<!-- Slideshow container -->
+				<div class="slideshow-container" style="width: 100%">
+
+				<!-- Full-width images with number and caption text -->
+    			<div class="mySlides fade" style="width: 100%">
+      				
+    			</div>
+  
+				<div class="mySlides fade">
+				
+				</div>
+  
+				<div class="mySlides fade">
+			
+				</div>
+  
+				<!-- Next and previous buttons -->
+				<a class="prev" onclick="plusSlides(-1, 'mySlides', 'dot')">&#10094;</a>
+				<a class="next" onclick="plusSlides(1, 'mySlides', 'dot')">&#10095;</a>
+			</div>
+			<br>
+  
+			<!-- The dots/circles -->
+			<div style="text-align:center">
+				<span class="dot" onclick="currentSlide(1, 'mySlides', 'dot')"></span>
+				<span class="dot" onclick="currentSlide(2, 'mySlides', 'dot')"></span>
+				<span class="dot" onclick="currentSlide(3, 'mySlides', 'dot')"></span>
+			</div>
+
+			
+
+			<div id="footer">
+				Copyright &copy; 2019 MPC TEAM
+			</div>
+	</div>
+
+
+    
+    {% endblock %}
+  </body>
+</html>
