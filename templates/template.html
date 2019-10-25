@@ -1,31 +1,93 @@
 
+
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
- <head>
-   {% block head %}
-   <meta charset="utf-8">
-   <title>Flask Parent Template</title>
-   <link rel="stylesheet" href="{{ url_for('static',     filename='template.css') }}">
-  
-<style>
-body{ 
-  background-image: url(static/background3.jpg);
-}
-</style>
-{% endblock%}
- </head>
- <body>
+<html>
+<head>
    
-    <div id="header">
-        {% block header %}
-            <img src="/static/images/logo.png" class="logo">
-            <a href="#" class="header-btn"><i class="fa fa-user"></i>Account</a>
-            <a href="#" class="header-btn">Recommend</a>
-            </div>
+  <title>Movie Night</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/template.css')}}" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <div id="body">{%block content%} {%endblock%}</div>
-    {% endblock %}
 
-    
- </body>
+  <style>
+  body{ 
+    background-image: url(static/images/background3.jpg);
+  }  
+    </style>
+  
+</head>
+
+<body>
+ 
+    <div class="container header">
+      <img src="static/images/logo.png" class="logo">
+      <a href= "#" class="header-btn"><i class="fa fa-user"></i>Account</a>
+      <a href="{{ url_for('recommend')}}" class="header-btn">Recommend</a>
+    </div>
+ 
+
+   {% block content %}
+
+   
+	<div class="container movie-details">
+		<div class="row">
+			<div class = "col-md-6 left-box">
+				<h1>Titanic</h1>
+				<p>This movie is about a ship hitting an iceberg and dying. Go watch it</p>
+				<p>Cast: </p>
+				<div class="casting">
+					<p>Leonardo Dicaprio, Julia Roberts, Danny Devito </p>
+
+				</div>
+
+				<a href="#"> <i class="fa fa-play"></i>Watch Now</a>
+
+			</div>
+			<div class="col-md-6 text-center">
+				 <img src="static/images/movie2.jpg" class="featured">
+				</div>
+
+		</div> 
+
+  </div>
+  {% endblock %}
+
+	<div class="container series">
+{% block title%}	 {% endblock %}
+		<div class="row">
+			<div class="col-md-4">
+        
+					<div class="col-6">
+            {% block img1 %}
+            
+          {% endblock %}
+          </div>
+					<div class="col-6">
+              {% block img2 %}
+            <img src="static/images/movie3.jpg">
+            {% endblock %}
+          </div>
+				</div>
+	      <div class="col-md-4">
+	      	<div class="col-6">
+              {% block img3 %}  <img src="static/images/jaws.jpg">{% endblock %}</div>
+			<div class="col-6"> {% block img4 %} <img src="static/images/movie5.jpg">{% endblock %}</div></div>
+	      <div class="col-md-4">
+	      	<div class="col-6">
+              {% block img5 %}<img src="static/images/movie3.jpg">{% endblock %}</div>
+			<div class="col-6">
+          {% block img6 %}<img src="static/images/movie4.jpg">{% endblock %}</div>
+	      </div>
+		</div>
+	</div>
+
+
+
+
+</body>
 </html>

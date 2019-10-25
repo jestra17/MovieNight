@@ -1,11 +1,21 @@
-body{
-
-    background-image:url(images/background3.jpg);
-
+*{
+	margin:0;
+	padding:0;
 }
-.header{
+body{ 
+	background-position: center;
+	background-size: cover;
+ }
+ .logo{ 
+ 	width:150px;
+ 	margin-top:18px; 
+  }
+
+ #header{
 	height:10%;
  }
+ 
+
 
  .header-btn{
  	margin: 10px;
@@ -19,3 +29,44 @@ body{
  	font-weight: 600;
 
  }
+
+ .movie-details{ 
+ 	margin: 3%  0; 
+  }
+
+  .left-box{
+  	color: #fff;
+  }
+ 
+  .left-box a{ 
+	text-decoration: none !important; 
+ 	border-radius: 30px;
+ 	padding: 7px 20px; 
+ 	margin-top:15px; 
+ 	color:#fff !important;
+ 	background: #107afd;
+ 	font-weight: 600;
+ 	display: inline-block;
+   }
+
+   .fa{ 
+   	margin: 0 5px;
+    }
+
+     .featured{ 
+     	width:50%;
+  	    cursor: pointer;
+  		opacity: 1;
+  		border-radius: 30px;
+   }
+   .series{
+	   background-color:black;
+   }
+   .series h3{ 
+   		color: #fff;
+    }
+
+    .series img{ 
+    	width: 65%;
+    	margin-top: 15px;
+     }

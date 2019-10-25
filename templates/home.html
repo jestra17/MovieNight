@@ -1,78 +1,33 @@
+{% extends "template.html" %}
 
-
-<!DOCTYPE html>
-<html>
-<head>
-   
-  <title>Movie Night</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/main.css')}}" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-  <style>
-  body{ 
-    background-image: url(static/images/background3.jpg);
-  }  
-    </style>
   
-</head>
-
-<body>
- 
-    <div class="container header">
-      <img src="static/images/logo.png" class="logo">
-      <a href="#" class="header-btn"><i class="fa fa-user"></i>Account</a>
-      <a href="#" class="header-btn">Recommend</a>
-    </div>
- 
-
    
-	<div class="container movie-details">
-		<div class="row">
-			<div class = "col-md-6 left-box">
-				<h1>Titanic</h1>
-				<p>This movie is about a ship hitting an iceberg and dying. Go watch it</p>
-				<p>Cast: </p>
-				<div class="casting">
-					<p>Leonardo Dicaprio, Julia Roberts, Danny Devito </p>
-
-				</div>
-
-				<a href="#"> <i class="fa fa-play"></i>Watch Now</a>
-
-			</div>
-			<div class="col-md-6 text-center">
-				 <img src="static/images/movie2.jpg" class="featured">
-				</div>
-
-		</div> 
-
-	</div>
-
-	<div class="container series">
-		<h3>Popular Movies</h3>
-		<div class="row">
-			<div class="col-md-4">
-					<div class="col-6"><img src="static/images/jaws.jpg"></div>
-					<div class="col-6"><img src="static/images/movie3.jpg"></div>
-				</div>
-	      <div class="col-md-4">
-	      	<div class="col-6"><img src="static/images/jaws.jpg"></div>
-			<div class="col-6"><img src="static/images/movie5.jpg"></div></div>
-	      <div class="col-md-4">
-	      	<div class="col-6"><img src="static/images/movie3.jpg"></div>
-			<div class="col-6"><img src="static/images/movie4.jpg"></div>
-	      </div>
-		</div>
-	</div>
+  
 
 
+  {% block img1 %}
+  <img src="static/images/jaws.jpg">
+  {% endblock %}
 
 
-</body>
-</html>
+  {% block img2 %}
+  <img src="static/images/movie3.jpg">
+  {% endblock %}
+
+ 
+  {% block img3 %}
+  <img src="static/images/jaws.jpg">
+  {% endblock %}
+
+ 
+  {% block img4 %}
+  <img src="static/images/movie4.jpg">
+  {% endblock %}
+
+  {% block img5 %}
+  <img src="static/images/movie3.jpg">
+  {% endblock %}
+
+  {% block img6 %}
+  <img src="static/images/movie5.jpg">
+  {% endblock %}
