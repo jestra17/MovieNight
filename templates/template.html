@@ -26,7 +26,9 @@
  
     <div class="container header">
       <img src="static/images/logo.png" class="logo">
-      <a href= "#" class="header-btn"><i class="fa fa-user"></i>Account</a>
+      <a href= "{{ url_for('home')}}" class="header-btn"><i class="fa fa-home"></i>home</a>
+      <a href= "{{ url_for('login')}}" class="header-btn"><i class="fa fa-user"></i>Login</a>
+      <a href= "{{ url_for('signup')}}" class="header-btn"></i>Sign Up</a>
       <a href="{{ url_for('recommend')}}" class="header-btn">Recommend</a>
     </div>
  
@@ -45,7 +47,7 @@
 
 				</div>
 
-				<a href="#"> <i class="fa fa-play"></i>Watch Now</a>
+				<a href="https://youtu.be/2e-eXJ6HgkQ"> <i class="fa fa-play"></i>Watch Trailer</a>
 
 			</div>
 			<div class="col-md-6 text-center">
@@ -64,7 +66,7 @@
         
 					<div class="col-6">
             {% block img1 %}
-            
+            <img  src="static/images/movie3.jpg">
           {% endblock %}
           </div>
 					<div class="col-6">
@@ -75,7 +77,7 @@
 				</div>
 	      <div class="col-md-4">
 	      	<div class="col-6">
-              {% block img3 %}  <img src="static/images/jaws.jpg">{% endblock %}</div>
+              {% block img3 %}  <img src= "static/images/jaws.jpg">{% endblock %}</div>
 			<div class="col-6"> {% block img4 %} <img src="static/images/movie5.jpg">{% endblock %}</div></div>
 	      <div class="col-md-4">
 	      	<div class="col-6">

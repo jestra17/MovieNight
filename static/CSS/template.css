@@ -59,14 +59,18 @@ body{
   		opacity: 1;
   		border-radius: 30px;
    }
-   .series{
-	   background-color:black;
-   }
+ 
    .series h3{ 
    		color: #fff;
     }
 
     .series img{ 
     	width: 65%;
-    	margin-top: 15px;
-     }
+		margin-top: 15px;
+		cursor: pointer;
+		transition: 1s;
+	 }
+	 
+	 .series img:hover{
+		 transform: translateY(-10px);
+	 }
