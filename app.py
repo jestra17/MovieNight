@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\sqlite\\database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
 
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
