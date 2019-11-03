@@ -52,7 +52,14 @@ def login():
     form = LoginForm()
    
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        #user = User.query.filter_by(username=form.username.data).first()
+        
+        try:
+            user = User.query.filter_by(username=form.username.data).first()
+        except:
+            #may want to reroute to signup page
+            return '<h1>username does not exist</h1>'
+
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
@@ -60,7 +67,6 @@ def login():
 
         return '<h1>Invalid username or password</h1>'
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
-
 
     return render_template("login.html",form=form)
 
