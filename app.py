@@ -20,19 +20,29 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+#Movie Class for Movie Table in DB
+#has a Genre Relationship since
+#sqlite columns do not support array values
+
 class Movie(db.Model) :
-    id = db.Column(db.Integer, primary_key=True);
-    title = db.Column(None);
-    overview = db.Column(None);
-    imbd_link = db.Column(None);
-    status = db.Column(None);
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(None)
+    overview = db.Column(None)
+    imbd_link = db.Column(None)
+    status = db.Column(None)
+
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'),
+        nullable=False)
+    #for debugging in python environment
+    def __repr__(self):
+        return '<Movie %r>' % self.title
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
-
+    #for debugging in python environment
     def __repr__(self):
         return '<User %r>' % self.username
 
