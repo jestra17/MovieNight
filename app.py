@@ -23,7 +23,8 @@ login_manager.login_view = 'login'
 #Movie Class for Movie Table in DB
 #has a Genre Relationship since
 #sqlite columns do not support array values
-
+#values are set to none while we wait for
+#API Connection to past tests
 class Movie(db.Model) :
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(None)
@@ -33,9 +34,26 @@ class Movie(db.Model) :
 
     genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'),
         nullable=False)
+    genre = db.relationship('Genre', 
+        backref=db.backref('movies', lazy=True))
     #for debugging in python environment
     def __repr__(self):
         return '<Movie %r>' % self.title
+
+#Genre Class for Genre Table in DB
+#has can assign movies to genres via movie Genre 
+#relationship, so there is no need to 
+#assign a value in the Movie Table, 
+#we can just keep track of what movies are in a 
+#particular Genre
+class Genre(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(None);
+
+    #for debugging in python environment
+    def __repr__(self):
+        return '<Genre %r>' % self.title
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
