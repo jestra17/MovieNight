@@ -7,12 +7,43 @@ from flask_sqlalchemy  import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import logging
 
 app = Flask(__name__)
 
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
+
+#Connecting MovieDatabase to sqlalchemy
+#using reflection of database
+engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db')
+session = sessionmaker(bind=engine)()
+Base = declarative_base()
+#movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)
+
+class Movie(Base):
+    __tablename__ = "MovieTB"
+    ID = Column(Integer, primary_key = True)
+    TITLE = Column(String)
+    DESCRIPTION = Column(String)
+    POSTER = Column(String)
+    RELEASE_DATE = Column(String)
+    STATUS = Column(String)
+    IMDB_LINK = Column(String)
+
+    def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
+        self.ID= ID
+        self.TITLE = TITLE
+        self.DESCRIPTION = DESCRIPTION
+        self.POSTER = POSTER
+        self.RELEASE_DATE = RELEASE_DATE
+        self.STATUS = STATUS
+        self.IMDB_LINK = IMBD_LINK
+
 
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
@@ -45,7 +76,17 @@ class RegisterForm(FlaskForm):
 
 @app.route("/")
 def home():
+    result = [r.POSTER for r in session.query(Movie).all()]
+    for r in result:
+        print(r)
     return render_template("home.html")
+
+@app.route('/autocomplete', methods= ['GET'])
+def autocomplete():
+    search = request.args.get('q')
+    query = session.query(Movie.TITLE).filter(Movie.TITLE.like('%' + str(search) + '%'))
+    results = [mv[0] for mv in query.all()]
+    return jsonify(matching_results = results)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
