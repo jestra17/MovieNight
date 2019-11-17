@@ -76,17 +76,7 @@ class RegisterForm(FlaskForm):
 
 @app.route("/")
 def home():
-    result = [r.POSTER for r in session.query(Movie).all()]
-    for r in result:
-        print(r)
     return render_template("home.html")
-
-@app.route('/autocomplete', methods= ['GET'])
-def autocomplete():
-    search = request.args.get('q')
-    query = session.query(Movie.TITLE).filter(Movie.TITLE.like('%' + str(search) + '%'))
-    results = [mv[0] for mv in query.all()]
-    return jsonify(matching_results = results)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -125,7 +115,13 @@ def signup():
 @app.route("/recommend")
 #@login_required
 def recommend():
-    return render_template("recommend.html")
+    my_movie_list = []
+    result = [r.TITLE for r in session.query(Movie).all()]
+    for r in result:
+        r = r.replace(',', '')
+        my_movie_list.append(r)
+    list_len = len(my_movie_list)
+    return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len)
 #name=current_user.username goes in return for recc commented out for editing purpose
 @app.route('/logout')
 @login_required

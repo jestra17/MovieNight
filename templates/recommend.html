@@ -11,38 +11,31 @@
   <button class="button5" type="button" onclick="processMovies()">Recommend Movies</button>
 </div>
 <script type="text/javascript">
+
+var myMovieArrayString = '{{my_movie_list|tojson}}';
+var myMovieArray= myMovieArrayString.split(",");
+var lengthOfMovieArray = '{{list_len}}';
+for(i=0; i< lengthOfMovieArray; i++){
+  myMovieArray[i] = myMovieArray[i].replace(/[\[\]"]+/g,'');
+  console.log(myMovieArray[i]);
+}
+
 var tags9 = $('#tagtacular_9').tagtacular({
 		entityId: 109,
     entityTags: [],
-    /*
-		remoteDataSource: function(request, response) {
-			var url = 'https://restcountries.eu/rest/v1/name/' + encodeURIComponent(request.term);
-
-			$.get(url, function(data){
-				processed = $(data).map(function() { return this.name; });
-
-				// restcountries.eu matches alternate spellings by default (which are alternate names in some cases). 
-				// We're throwing out those matches in order to not confuse the user.
-				processed = processed.filter(function(i, value) {
-					return value.toLowerCase().indexOf(request.term.toLowerCase()) >= 0;
-				});
-				response(processed);
-			});
-    },
-    */
+    systemTags: myMovieArray,
+  
 		configEditTrayFirst: true,
-		configLimitToExisting: false,
+		configLimitToExisting: true,
 		configShowAddButton: false,
     configShowSwitchButton: false,
   });
 
   function processMovies(){
-    /*
-  var p = document.createElement("p");
-  p.innerHTML = JSON.stringify(tags9.getEntityTags());
-  document.body.appendChild(p);
-  */
- var userInputtedMovies=tags9.getEntityTags()
+    //var p = document.createElement("p");
+    //p.innerHTML = JSON.stringify(tags9.getEntityTags());
+    //document.body.appendChild(p);
+    var userInputtedMovies=tags9.getEntityTags()
   }
   
 </script>

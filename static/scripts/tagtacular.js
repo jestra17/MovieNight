@@ -509,10 +509,10 @@
 			if (tag.length > settings.configMaximumTagLength) {
 				return settings.messageTagTooLong;
 			}
-			var pattern = settings.validationPattern;
-			if (!pattern.test(tag)) {
-				return settings.messageTagNameInvalid;
-			}
+			//var pattern = settings.validationPattern;
+			//if (!pattern.test(tag)) {
+			//	return settings.messageTagNameInvalid;
+			//}
 
 			return true;
 		}
@@ -579,7 +579,7 @@
 			sort:                          caseInsensitiveSort,
 			systemTags:                    [],
 			validate:                      defaultValidate,
-			validationPattern:             /^[0-9A-Za-z_\- ]+$/
+			//validationPattern:             /^[0-9A-Za-z_\- ]+$/
 		};
 
 		// initialization function
