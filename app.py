@@ -18,6 +18,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
 
+bootstrap = Bootstrap(app)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
 #Connecting MovieDatabase to sqlalchemy
 #using reflection of database
 
@@ -28,14 +34,17 @@ Base = declarative_base()
 
 class Movie(Base):
     __tablename__ = "MovieTB"
-    ID = Column(Integer, primary_key = True)
-    TITLE = Column(String)
-    GENRE = Column(String)
-    DESCRIPTION = Column(String)
-    POSTER = Column(String)
-    RELEASE_DATE = Column(String)
-    STATUS = Column(String)
-    IMDB_LINK = Column(String)
+    #adds Movie Table to db
+    #see https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
+    #for details about this process
+    ID = db.Column(Integer, primary_key = True)
+    TITLE = db.Column(String)
+    GENRE = db.Column(String)
+    DESCRIPTION = db.Column(String)
+    POSTER = db.Column(String)
+    RELEASE_DATE = db.Column(String)
+    STATUS = db.Column(String)
+    IMDB_LINK = db.Column(String)
 
     def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
         self.ID= ID
@@ -46,47 +55,6 @@ class Movie(Base):
         self.RELEASE_DATE = RELEASE_DATE
         self.STATUS = STATUS
         self.IMDB_LINK = IMBD_LINK
-
-
-bootstrap = Bootstrap(app)
-db = SQLAlchemy(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
-#Movie Class for Movie Table in DB
-#has a Genre Relationship since
-#sqlite columns do not support array values
-#values are set to none while we wait for
-#API Connection to past tests
-class Movie(db.Model) :
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(None)
-    overview = db.Column(None)
-    imbd_link = db.Column(None)
-    status = db.Column(None)
-
-    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'),
-        nullable=False)
-    genre = db.relationship('Genre', 
-        backref=db.backref('movies', lazy=True))
-    #for debugging in python environment
-    def __repr__(self):
-        return '<Movie %r>' % self.title
-
-#Genre Class for Genre Table in DB
-#has can assign movies to genres via movie Genre 
-#relationship, so there is no need to 
-#assign a value in the Movie Table, 
-#we can just keep track of what movies are in a 
-#particular Genre
-class Genre(db.Model) :
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(None);
-
-    #for debugging in python environment
-    def __repr__(self):
-        return '<Genre %r>' % self.title
 
 
 class User(UserMixin, db.Model):
