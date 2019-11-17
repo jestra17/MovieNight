@@ -78,15 +78,11 @@ class RegisterForm(FlaskForm):
 
 @app.route("/")
 def home():
-<<<<<<< HEAD
     data =[]
     result = [r.POSTER for r in session.query(Movie).all()]
     for r in result:
         data.append(r)
     return render_template("home.html", data=data)
-=======
-    return render_template("home.html")
->>>>>>> 8d0e9f2b0cf708be31fa21f9983e6df1e537231c
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

@@ -11,9 +11,7 @@
   <button class="button5" type="button" onclick="processMovies()">Recommend Movies</button>
 </div>
 <script type="text/javascript">
-<<<<<<< HEAD
 var userInputtedMovies=[];
-=======
 
 var myMovieArrayString = '{{my_movie_list|tojson}}';
 var myMovieArray= myMovieArrayString.split(",");
@@ -22,7 +20,6 @@ for(i=0; i< lengthOfMovieArray; i++){
   myMovieArray[i] = myMovieArray[i].replace(/[\[\]"]+/g,'');
   console.log(myMovieArray[i]);
 }
->>>>>>> 8d0e9f2b0cf708be31fa21f9983e6df1e537231c
 
 var tags9 = $('#tagtacular_9').tagtacular({
 		entityId: 109,
@@ -36,7 +33,6 @@ var tags9 = $('#tagtacular_9').tagtacular({
   });
 
   function processMovies(){
-<<<<<<< HEAD
     
   var p = document.createElement("p");
   p.innerHTML = JSON.stringify(tags9.getEntityTags());
@@ -56,13 +52,6 @@ var tags9 = $('#tagtacular_9').tagtacular({
         "content-type": "application/json"
     })
   })
-=======
-    //var p = document.createElement("p");
-    //p.innerHTML = JSON.stringify(tags9.getEntityTags());
-    //document.body.appendChild(p);
-    var userInputtedMovies=tags9.getEntityTags()
-  }
->>>>>>> 8d0e9f2b0cf708be31fa21f9983e6df1e537231c
   
   }
 
