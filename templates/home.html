@@ -3,7 +3,10 @@
   
    
   
-
+  {% block navigation %}
+  <a href= "{{ url_for('login')}}" class="header-btn"><i class="fa fa-user"></i>Login</a>
+  <a href= "{{ url_for('signup')}}" class="header-btn"></i>Sign Up</a>
+  {% endblock %}
 
   {% block img1 %}
   <img src="static/images/jaws.jpg">
