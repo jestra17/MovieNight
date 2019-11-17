@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for,jsonify,request, make_response
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField   
@@ -11,7 +11,6 @@ from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import logging
-
 app = Flask(__name__)
 
 
@@ -20,7 +19,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
 
 #Connecting MovieDatabase to sqlalchemy
 #using reflection of database
-engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db')
+
+engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
 session = sessionmaker(bind=engine)()
 Base = declarative_base()
 #movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)
@@ -29,6 +29,7 @@ class Movie(Base):
     __tablename__ = "MovieTB"
     ID = Column(Integer, primary_key = True)
     TITLE = Column(String)
+    GENRE = Column(String)
     DESCRIPTION = Column(String)
     POSTER = Column(String)
     RELEASE_DATE = Column(String)
@@ -38,6 +39,7 @@ class Movie(Base):
     def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
         self.ID= ID
         self.TITLE = TITLE
+        self.GENRE = GENRE
         self.DESCRIPTION = DESCRIPTION
         self.POSTER = POSTER
         self.RELEASE_DATE = RELEASE_DATE
@@ -76,10 +78,11 @@ class RegisterForm(FlaskForm):
 
 @app.route("/")
 def home():
+    data =[]
     result = [r.POSTER for r in session.query(Movie).all()]
     for r in result:
-        print(r)
-    return render_template("home.html")
+        data.append(r)
+    return render_template("home.html", data=data)
 
 @app.route('/autocomplete', methods= ['GET'])
 def autocomplete():
@@ -127,6 +130,18 @@ def signup():
 def recommend():
     return render_template("recommend.html")
 #name=current_user.username goes in return for recc commented out for editing purpose
+
+@app.route("/process", methods = ['POST'])
+def process():
+    req= []
+    req = request.get_json()   #gets userInputedmovies from recommend page
+    movie1 = req[0]   #variable to use for query to get movie genre
+    print(req)
+    res = make_response(jsonify({"message": "JSON received"}),200)
+    return res
+
+
+
 @app.route('/logout')
 @login_required
 def logout():

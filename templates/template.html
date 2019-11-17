@@ -65,34 +65,11 @@
 
 	<div class="container series">
 {% block title%}	 {% endblock %}
-		<div class="row">
-			<div class="col-md-4">
-        
-					<div class="col-6">
-            {% block img1 %}
-            <img  src="static/images/movie3.jpg">
-          {% endblock %}
-          </div>
-					<div class="col-6">
-              {% block img2 %}
-            <img src="static/images/movie3.jpg">
-            {% endblock %}
-          </div>
-				</div>
-	      <div class="col-md-4">
-	      	<div class="col-6">
-              {% block img3 %}  <img src= "static/images/jaws.jpg">{% endblock %}</div>
-			<div class="col-6"> {% block img4 %} <img src="static/images/movie5.jpg">{% endblock %}</div></div>
-	      <div class="col-md-4">
-	      	<div class="col-6">
-              {% block img5 %}<img src="static/images/movie3.jpg">{% endblock %}</div>
-			<div class="col-6">
-          {% block img6 %}<img src="static/images/movie4.jpg">{% endblock %}</div>
-	      </div>
-		</div>
-	</div>
+
+{% block movies %}
 
 
+{% endblock %}
 
 
 </body>
