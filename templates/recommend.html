@@ -11,6 +11,7 @@
   <button class="button5" type="button" onclick="processMovies()">Recommend Movies</button>
 </div>
 <script type="text/javascript">
+var userInputtedMovies=[];
 
 var myMovieArrayString = '{{my_movie_list|tojson}}';
 var myMovieArray= myMovieArrayString.split(",");
@@ -32,12 +33,28 @@ var tags9 = $('#tagtacular_9').tagtacular({
   });
 
   function processMovies(){
-    //var p = document.createElement("p");
-    //p.innerHTML = JSON.stringify(tags9.getEntityTags());
-    //document.body.appendChild(p);
-    var userInputtedMovies=tags9.getEntityTags()
-  }
+    
+  var p = document.createElement("p");
+  p.innerHTML = JSON.stringify(tags9.getEntityTags());
+  document.body.appendChild(p);
+
+  userInputtedMovies=tags9.getEntityTags();
+  var input = {
+    userInputtedMovies : userInputtedMovies.value
+  };
+  console.log(JSON.stringify(userInputtedMovies));
+  fetch(`${window.origin}/process`,{
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(userInputtedMovies),
+    cache: "no-cache",
+    headers: new Headers({
+        "content-type": "application/json"
+    })
+  })
   
+  }
+
 </script>
 </div>
 
