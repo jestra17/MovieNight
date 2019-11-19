@@ -26,7 +26,7 @@ Sprint 3:
 *  As a user, I want to be able to get a list of movie recommendations (20)
 *  As a user, I want to keep track of the movies I selected before and use it for the new search inquiry. (5)
 Sprint 4:
-*  As a user, when I search a movie I want to see information about the movie. (3)
+*  As a user, when I search for a movie I want to see information about the movie a different page. (3) 
 * As a user I want to be able to see a description of the movie I click on.(3)
 * As a user I want to be able to see a link to a trailer of the movie I clicked on. (5)  
 
