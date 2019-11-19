@@ -28,6 +28,7 @@ Sprint 3:
 Sprint 4:
 *  As a user, when I search for a movie I want to see information about the movie a different page. (3) 
 *  As a user I want to be able to see a link to a trailer of the movie I clicked on. (5)  
+*  As a user, I want to add movies to my movie playlists (5)
 
 
 Product backlog: 
