@@ -2,6 +2,11 @@
 
   
    
+  
+  {% block navigation %}
+  <a href= "{{ url_for('login')}}" class="header-btn"><i class="fa fa-user"></i>Login</a>
+  <a href= "{{ url_for('signup')}}" class="header-btn"></i>Sign Up</a>
+  {% endblock %}
 <!--  
 {% block stuff %}
     <div class="row">
