@@ -1,15 +1,19 @@
 {% extends "template.html" %}
-<style type="text/css">
-	h6{
-		color: white;
-	}
-</style>
 {% block title%}
 <h2 align="center">TITLE FROM DB</h2>
 {% endblock %}
 
 {% block movies %}
-<img src="static/images/jaws.jp"><h6>some image from db</h6></img>
+<table cellspacing="20">
+    <tr>
+      <td><img src="static/images/jaws.jpg" height="250" width="250"></td>
+      <td>
+      	<table>
+      		<td></td>
+      	</table>
+      </td>
+    </tr>
+  </table>
 
 {% endblock %}
 
