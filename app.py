@@ -14,6 +14,8 @@ from flask_login import current_user
 import logging
 app = Flask(__name__)
 
+url = ""
+
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
@@ -77,19 +79,34 @@ class RegisterForm(FlaskForm):
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
 
+
+##### Babak's working on it
+
+@app.route("/movie/<movieId>",methods=['GET'])
+def  movie(movieId):
+    all_movie_elements = query = session.query(Movie).order_by(Movie.ID)
+
+
+    return render_template("movie.html", data = all_movie_elements)
+
+
+
+
+
+    
+
 @app.route("/")
 def home():
     data =[]
     myPosterUrls = []
-    result = [r.POSTER for r in session.query(Movie).all()]
-    for r in result:
-        data.append(r)
-        myPosterUrls.append(r)
-    list_len= len(myPosterUrls)  
+    img_url = [r.POSTER for r in session.query(Movie).all()]
+    img_id = [r.ID for r in session.query(Movie).all()]
+    data = [(id, url) for url,id in zip(img_url, img_id)]
+    
     if current_user.is_authenticated:
-         return render_template("userHome.html",myPosterUrls=myPosterUrls, list_len= list_len)
+         return render_template("userHome.html",myPosterUrls = img_url, img_id = img_id)
     else:
-         return render_template("home.html",data=data)
+         return render_template("home.html",data=data,img_id = img_id)
 
 
 @app.route("/login", methods=['GET', 'POST'])

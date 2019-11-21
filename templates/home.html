@@ -1,25 +1,11 @@
 {% extends "template.html" %}
 
-  
-   
+
   
   {% block navigation %}
   <a href= "{{ url_for('login')}}" class="header-btn"><i class="fa fa-user"></i>Login</a>
   <a href= "{{ url_for('signup')}}" class="header-btn"></i>Sign Up</a>
   {% endblock %}
-<!--  
-{% block stuff %}
-    <div class="row">
-    <div class="col-md-4"> <img src={{img1}} > </div>
-    <div class="col-md-4"> <img src={{img2}}> </div>
-    <div class="col-md-4"> <img src={{img3}}> </div>
-  </div>
-<div class="row">
-    <div class="col-md-4"> <img src={{img4}}> </div>
-    <div class="col-md-4"> <img src={{img5}}> </div>
-    <div class="col-md-4"> <img src={{img6}}> </div>
-</div> 
-{% endblock %} -->
 
 {% block movies %}
 <style>
@@ -34,67 +20,18 @@
      }
     
     </style>
-
-   
-    ]
     
-      {% for url in data %}
+      {% for tuple in data %}
       {% if loop.index == 1 %}
       <div class="row">
-          <div class="col-md-4"><img src={{url}}></div>
+          <div class="col-md-4"><a href=movie/{{tuple[0]}}><img src={{tuple[1]}}></a></div>
       {% elif loop.index is divisibleby 3  %}
       <div class="row">
-       <div class="col-md-4"><img src={{url}}></div> </div>
+       <div class="col-md-4"><a href=movie/{{tuple[0]}}><img src={{tuple[1]}}></a></div> </div>
       {% else %}
-          <div class="col-md-4"><img src={{url}}></div>
+          <div class="col-md-4"><a href=movie/{{tuple[0]}}><img src={{tuple[1]}}></a></div>
         {% endif %}
         
     
     {% endfor %}
   {% endblock %}
-
-
-
-
-
-<!-- 
-  {% block img1 %}
-  <img src="static/images/jaws.jpg">
-  {% endblock %}
-
-
-  {% block img2 %}
-
-  <style>
-  img{
-    width: 65%;
-		margin-top: 15px;
-		cursor: pointer;
-		transition: 1s;
-  }
-  img:hover{
-		 transform: translateY(-10px);
-	 }
-  
-  </style>
-  <img src="static/images/movie3.jpg">
-  {% endblock %}
-
- 
-  {% block img3 %}
-  {{data}}
-  <img src="static/images/jaws.jpg">
-  {% endblock %}
-
- 
-  {% block img4 %}
-  <img src="static/images/movie4.jpg">
-  {% endblock %}
-
-  {% block img5 %}
-  <img src="static/images/movie3.jpg">
-  {% endblock %}
-
-  {% block img6 %}
-  <img src="static/images/movie5.jpg">
-  {% endblock %} -->
