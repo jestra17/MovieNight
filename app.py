@@ -121,6 +121,7 @@ def signup():
 @app.route("/recommend")
 #@login_required
 def recommend():
+
     my_movie_list = []
     result = [r.TITLE for r in session.query(Movie).all()]
     for r in result:
@@ -133,11 +134,41 @@ def recommend():
 @app.route("/process", methods = ['POST'])
 def process():
     req= []
+    genreList = []
+    recMovieList= []
+    newGenreList =[]
+    
+    #stuff from recommend page
+    my_movie_list = []
+    result = [r.TITLE for r in session.query(Movie).all()]
+    for r in result:
+        r = r.replace(',', '')
+        my_movie_list.append(r)
+    list_len = len(my_movie_list)
+
     req = request.get_json()   #gets userInputedmovies from recommend page
     movie1 = req[0]   #variable to use for query to get movie genre
     print(req)
-    res = make_response(jsonify({"message": "JSON received"}),200)
-    return res
+    for i,val in enumerate(req):
+        for instance in session.query(Movie).filter(Movie.TITLE == val):
+            genreList.append(instance.GENRE)
+    print(genreList)
+    
+    #iterate over genreList
+    for i, val in enumerate(genreList): #iterate over genreList pulling out each value
+         tempList = val.split(",")     # separate each string with commas into separate items ("cat, dog" ->"cat","dog" )
+         for i, val in enumerate(tempList): # pull each value of newly separated list
+            newGenreList.append(val)        #append to new genreList 
+    newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
+    print(newGenreList)
+
+    for i, val in enumerate(genreList):
+        for instance in session.query(Movie).filter(Movie.GENRE.like(val)):
+            recMovieList.append(instance.POSTER)
+    print(recMovieList)
+    return redirect(url_for("recommend",data=recMovieList))
+    #render_template("recommend.html",data=recMovieList,my_movie_list = my_movie_list, list_len= list_len)
+    
 
 
 
