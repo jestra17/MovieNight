@@ -139,7 +139,9 @@ def recommend():
         r = r.replace(',', '')
         my_movie_list.append(r)
     list_len = len(my_movie_list)
-    session.pop('movie_list')
+
+
+# session.pop('movie_list')  # this is supposed to delete the list of urls when we return to the home page
     return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len)
 #name=current_user.username goes in return for recc commented out for editing purpose
 
