@@ -44,7 +44,8 @@ var tags9 = $('#tagtacular_9').tagtacular({
   var input = {
     userInputtedMovies : userInputtedMovies.value
   };
-  console.log(JSON.stringify(userInputtedMovies));
+  
+
   fetch(`${window.origin}/process`,{
     method: "POST",
     credentials: "include",
@@ -54,8 +55,13 @@ var tags9 = $('#tagtacular_9').tagtacular({
         "content-type": "application/json"
     })
   })
-  
+
+  //redirects page to recMovies page
+  window.location="/recMovies";
+
+
   }
+
 
 </script>
 </div>
@@ -63,36 +69,3 @@ var tags9 = $('#tagtacular_9').tagtacular({
 {% endblock %}
 
 
-{% block movies %}
-<style>
-    img{
-      width: 65%;
-      margin-top: 15px;
-      cursor: pointer;
-      transition: 1s;
-    }
-    img:hover{
-       transform: translateY(-10px);
-     }
-    
-    </style>
-
-   
-    
-    
-    {% if data|length %}
-      {% for url in data %}
-        {% if loop.index == 1 %}
-          <div class="row">
-          <div class="col-md-4"><img src={{url}}></div>
-        {% elif loop.index is divisibleby 3  %}
-          <div class="row">
-          <div class="col-md-4"><img src={{url}}></div> </div>
-        {% else %}
-          <div class="col-md-4"><img src={{url}}></div>
-        {% endif %}
-      {% endfor %}
-    {% else %}
-    {% endif %}
-
-  {% endblock %}

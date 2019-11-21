@@ -26,10 +26,9 @@ Sprint 3:
 *  As a user, I want to be able to get a list of movie recommendations (20)
 *  As a user, I want to keep track of the movies I selected before and use it for the new search inquiry. (5)
 Sprint 4:
-*  As a user, when I search a movie I want to see information about the movie. (3)
-* As a user I want the home page to populate with movies that are popular in my country. (5)
-* As a user I want to be able to see a description of the movie I click on.(3)
-* As a user I want to be able to see a link to a trailer of the movie I clicked on. (5)  
+*  As a user, when I search for a movie I want to see information about the movie a different page. (3) 
+*  As a user I want to be able to see a link to a trailer of the movie I clicked on. (5)  
+*  As a user, I want to add movies to my movie playlists (5)
 
 
 Product backlog: 
@@ -37,8 +36,8 @@ Product backlog:
 *  As a user, I want to be able to see where I could go to watch the movie
 * Be able to auto-fill text of movie titles
 * As a user, I want to be able to not type the entire movie title and see suggestions for movie titles through autofill. 
-* Be able to show movie information about each movie
 * As a user, I want to be able to see a blurb of the movie description when I hover over the movie image. 
+* As a user I want the home page to populate with movies that are popular in my country. (5)
 
 
 Project Presentation

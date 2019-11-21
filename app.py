@@ -7,6 +7,7 @@ from flask_sqlalchemy  import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
+from flask import session
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -21,7 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
 #using reflection of database
 
 engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
-session = sessionmaker(bind=engine)()
+DBsession = sessionmaker(bind=engine)()
 Base = declarative_base()
 #movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)
 
@@ -79,7 +80,7 @@ class RegisterForm(FlaskForm):
 @app.route("/")
 def home():
     data =[]
-    result = [r.POSTER for r in session.query(Movie).all()]
+    result = [r.POSTER for r in DBsession.query(Movie).all()]
     for r in result:
         data.append(r)
     return render_template("home.html", data=data)
@@ -108,8 +109,8 @@ def signup():
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+        db.DBsession.add(new_user)
+        db.DBsession.commit()
 
         return '<h1>New user has been created!</h1>'
         #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
@@ -121,15 +122,22 @@ def signup():
 @app.route("/recommend")
 #@login_required
 def recommend():
-
     my_movie_list = []
-    result = [r.TITLE for r in session.query(Movie).all()]
+    result = [r.TITLE for r in DBsession.query(Movie).all()]
     for r in result:
         r = r.replace(',', '')
         my_movie_list.append(r)
     list_len = len(my_movie_list)
+    session.pop('movie_list')
     return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len)
 #name=current_user.username goes in return for recc commented out for editing purpose
+
+
+@app.route("/recMovies")
+def recMovies(): 
+    data = []
+    data = session.get('movie_list')
+    return render_template("recMovies.html",data=data)
 
 @app.route("/process", methods = ['POST'])
 def process():
@@ -138,19 +146,10 @@ def process():
     recMovieList= []
     newGenreList =[]
     
-    #stuff from recommend page
-    my_movie_list = []
-    result = [r.TITLE for r in session.query(Movie).all()]
-    for r in result:
-        r = r.replace(',', '')
-        my_movie_list.append(r)
-    list_len = len(my_movie_list)
-
     req = request.get_json()   #gets userInputedmovies from recommend page
-    movie1 = req[0]   #variable to use for query to get movie genre
     print(req)
     for i,val in enumerate(req):
-        for instance in session.query(Movie).filter(Movie.TITLE == val):
+        for instance in DBsession.query(Movie).filter(Movie.TITLE == val):
             genreList.append(instance.GENRE)
     print(genreList)
     
@@ -162,13 +161,18 @@ def process():
     newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
     print(newGenreList)
 
-    for i, val in enumerate(genreList):
-        for instance in session.query(Movie).filter(Movie.GENRE.like(val)):
+    #iterate over newGenreList to get movie posters for movies with listed genres 
+    for i, val in enumerate(newGenreList):
+        for instance in DBsession.query(Movie).filter(Movie.GENRE.like(val)):
             recMovieList.append(instance.POSTER)
-    print(recMovieList)
-    return redirect(url_for("recommend",data=recMovieList))
-    #render_template("recommend.html",data=recMovieList,my_movie_list = my_movie_list, list_len= list_len)
     
+  #  print(recMovieList)
+    session['movie_list'] = recMovieList
+    print(session['movie_list'])
+    #for i, val in enumerate(session['movie_list']):
+     #   print(val)
+     #this redirect doesnt even work
+    return redirect('recMovies')
 
 
 
