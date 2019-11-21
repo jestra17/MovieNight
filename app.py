@@ -131,6 +131,10 @@ def signup():
 
     return render_template("signup.html",form=form)
 
+@app.route("/moviedetail")
+
+def moviedetails():
+    return render_template("moviedetails.html")
 
 @app.route("/recommend")
 #@login_required
