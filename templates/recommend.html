@@ -8,7 +8,9 @@
 </h2>
 <div class="tagtacular_basic blue" id="tagtacular_9" style="align-content: center"></div>
 <div style="font-size:1.5em; text-align:center">
-  <button class="button5" type="button" onclick="processMovies()">Recommend Movies</button>
+ 
+  <button class="button5"  type="button" onclick="processMovies()">Recommend Movies</button>
+
 </div>
 <script type="text/javascript">
 var userInputtedMovies=[];
@@ -42,7 +44,8 @@ var tags9 = $('#tagtacular_9').tagtacular({
   var input = {
     userInputtedMovies : userInputtedMovies.value
   };
-  console.log(JSON.stringify(userInputtedMovies));
+  
+
   fetch(`${window.origin}/process`,{
     method: "POST",
     credentials: "include",
@@ -52,8 +55,13 @@ var tags9 = $('#tagtacular_9').tagtacular({
         "content-type": "application/json"
     })
   })
-  
+
+  //redirects page to recMovies page
+  window.location="/recMovies";
+
+
   }
+
 
 </script>
 </div>
@@ -61,28 +69,3 @@ var tags9 = $('#tagtacular_9').tagtacular({
 {% endblock %}
 
 
-{% block img1 %}
-<img src="static/images/noImage.png">
-{% endblock %}
-
-
-  {% block img2 %}
-  <img src="static/images/noImage.png">
-  {% endblock %}
-
- 
-  {% block img3 %}
-  <img src="static/images/noImage.png">
-  {% endblock %}
- 
-  {% block img4 %}
-  <img src="static/images/noImage.png">
-  {% endblock %}
-
-  {% block img5 %}
-  <img src="/static/images/noImage.png">
-  {% endblock %}
-
-  {% block img6 %}
-  <img src="/static/images/noImage.png">
-  {% endblock %}
