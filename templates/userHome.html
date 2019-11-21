@@ -1,0 +1,52 @@
+{% extends "template.html" %}
+
+
+{% block navigation %}
+<a href= "{{ url_for('logout')}}" class="header-btn"></i>Log Out</a>
+{% endblock %}
+
+{% block content %}
+<h4>Movies watched</h4>
+<div class="owl-carousel owl-theme" id="myWatchedList">
+</div>
+<h4>Movies to watch</h4>
+<div class="owl-carousel owl-theme" id="myToWatchList">
+</div>
+<script>
+  console.log("injs");
+  var ms= '{{myPosterUrls|tojson}}';
+  var mainDiv1 = document.getElementById('myWatchedList');
+  var mainDiv2 = document.getElementById('myToWatchList');
+  var m= ms.split(",");
+  var list_len = m.length;
+  for(i=0; i< list_len; i++){
+  m[i] = m[i].replace(/[\[\]"]+/g,'');
+  var innerIMGWatched= document.createElement('img');
+  var innerIMGtoWatch= document.createElement('img');
+  innerIMGWatched.src= m[i]
+  innerIMGtoWatch.src = m[i];
+  mainDiv1.appendChild(innerIMGWatched);
+  mainDiv2.appendChild(innerIMGtoWatch);
+  }
+
+  $(document).ready(function(){
+  $('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:3
+        },
+        1000:{
+            items:5
+        }
+    }
+})
+});
+</script>
+
+{% endblock %}

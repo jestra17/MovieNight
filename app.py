@@ -11,6 +11,7 @@ from flask import session
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from flask_login import current_user
 import logging
 app = Flask(__name__)
 
@@ -80,10 +81,21 @@ class RegisterForm(FlaskForm):
 @app.route("/")
 def home():
     data =[]
+<<<<<<< HEAD
     result = [r.POSTER for r in DBsession.query(Movie).all()]
+=======
+    myPosterUrls = []
+    result = [r.POSTER for r in session.query(Movie).all()]
+>>>>>>> 3001a599ffc26ff3ee2d2265dc4924f84c353e61
     for r in result:
         data.append(r)
-    return render_template("home.html", data=data)
+        myPosterUrls.append(r)
+    list_len= len(myPosterUrls)  
+    if current_user.is_authenticated:
+         return render_template("userHome.html",myPosterUrls=myPosterUrls, list_len= list_len)
+    else:
+         return render_template("home.html",data=data)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
