@@ -81,12 +81,11 @@ class RegisterForm(FlaskForm):
 @app.route("/")
 def home():
     data =[]
-<<<<<<< HEAD
     result = [r.POSTER for r in DBsession.query(Movie).all()]
-=======
+
     myPosterUrls = []
-    result = [r.POSTER for r in session.query(Movie).all()]
->>>>>>> 3001a599ffc26ff3ee2d2265dc4924f84c353e61
+    result = [r.POSTER for r in DBsession.query(Movie).all()]
+
     for r in result:
         data.append(r)
         myPosterUrls.append(r)
@@ -183,7 +182,8 @@ def process():
     print(session['movie_list'])
     #for i, val in enumerate(session['movie_list']):
      #   print(val)
-     #this redirect doesnt even work
+     #this redirect 
+     # doesnt even work
     return redirect('recMovies')
 
 
