@@ -17,7 +17,8 @@ app = Flask(__name__)
 
 url = ""
 
-
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = False 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
 
@@ -157,16 +158,10 @@ def recommend():
     list_len = len(my_movie_list)
 
 
-# session.pop('movie_list')  # this is supposed to delete the list of urls when we return to the home page
     return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len)
 #name=current_user.username goes in return for recc commented out for editing purpose
 
 
-@app.route("/recMovies")
-def recMovies(): 
-    data = []
-    data = session.get('movie_list')
-    return render_template("recMovies.html",data=data)
 
 @app.route("/process", methods = ['POST'])
 def process():
@@ -190,19 +185,18 @@ def process():
     newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
     print(newGenreList)
 
+  
     #iterate over newGenreList to get movie posters for movies with listed genres 
     for i, val in enumerate(newGenreList):
-        for instance in DBsession.query(Movie).filter(Movie.GENRE.like(val)):
+        print(val)
+        for instance in DBsession.query(Movie).filter(Movie.GENRE.contains(val)):
             recMovieList.append(instance.POSTER)
     
-  #  print(recMovieList)
+    print(recMovieList)
+    recMovieList = list(set(recMovieList))
     session['movie_list'] = recMovieList
-    print(session['movie_list'])
-    #for i, val in enumerate(session['movie_list']):
-     #   print(val)
-     #this redirect 
-     # doesnt even work
-    return redirect('recMovies')
+    res = make_response(jsonify(recMovieList,200))
+    return res
 
 
 
