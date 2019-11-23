@@ -13,6 +13,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_login import current_user
 import logging
+import random
 app = Flask(__name__)
 
 url = ""
@@ -28,7 +29,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
 engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
 DBsession = sessionmaker(bind=engine)()
 Base = declarative_base()
-#movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)
+#movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)'
+
+
 
 class Movie(Base):
     __tablename__ = "MovieTB"
@@ -51,13 +54,11 @@ class Movie(Base):
         self.STATUS = STATUS
         self.IMDB_LINK = IMBD_LINK
 
-
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
@@ -169,6 +170,7 @@ def process():
     genreList = []
     recMovieList= []
     newGenreList =[]
+    randomMovies= []
     
     req = request.get_json()   #gets userInputedmovies from recommend page
     print(req)
@@ -194,7 +196,8 @@ def process():
     
     print(recMovieList)
     recMovieList = list(set(recMovieList))
-    session['movie_list'] = recMovieList
+    randomMovies = random.sample(recMovieList, 51)
+    session['movie_list'] = randomMovies
     res = make_response(jsonify(recMovieList,200))
     return res
 
