@@ -21,28 +21,41 @@ url = ""
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = False 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///MovieNight_API_DATABASE/MovieDB.db'
 
 #Connecting MovieDatabase to sqlalchemy
 #using reflection of database
 
-engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
-DBsession = sessionmaker(bind=engine)()
-Base = declarative_base()
+#engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
+#DBsession = sessionmaker(bind=engine)()
+#Base = declarative_base()
 #movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)'
 
+bootstrap = Bootstrap(app)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
+UserWatched_table = db.Table('UserWatched', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
+)
+UserWantsToWatch_table = db.Table('UserWantsToWatch', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
+)
 
-class Movie(Base):
+class Movie(db.Model):
     __tablename__ = "MovieTB"
-    ID = Column(Integer, primary_key = True)
-    TITLE = Column(String)
-    GENRE = Column(String)
-    DESCRIPTION = Column(String)
-    POSTER = Column(String)
-    RELEASE_DATE = Column(String)
-    STATUS = Column(String)
-    IMDB_LINK = Column(String)
+    ID = db.Column(Integer, primary_key = True)
+    TITLE = db.Column(String)
+    GENRE = db.Column(String)
+    DESCRIPTION = db.Column(String)
+    POSTER = db.Column(String)
+    RELEASE_DATE = db.Column(String)
+    STATUS = db.Column(String)
+    IMDB_LINK = db.Column(String)
 
     def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
         self.ID= ID
@@ -54,16 +67,18 @@ class Movie(Base):
         self.STATUS = STATUS
         self.IMDB_LINK = IMBD_LINK
 
-bootstrap = Bootstrap(app)
-db = SQLAlchemy(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
+    moviesWatched = db.relationship("Movie",
+                               secondary=UserWatched_table)
+    moviesWantToWatch = db.relationship("Movie",
+                               secondary=UserWantsToWatch_table)
+
+db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -101,11 +116,11 @@ def  movie(movieId):
 @app.route("/")
 def home():
     data =[]
-    result = [r.POSTER for r in DBsession.query(Movie).all()]
+    result = [r.POSTER for r in Movie.query.all()]
 
     myPosterUrls = []
-    img_url = [r.POSTER for r in DBsession.query(Movie).all()]
-    img_id = [r.ID for r in DBsession.query(Movie).all()]
+    img_url = [r.POSTER for r in Movie.query.all()]
+    img_id = [r.ID for r in Movie.query.all()]
     data = [(id, url) for url,id in zip(img_url, img_id)]
     
     if current_user.is_authenticated:
@@ -138,10 +153,10 @@ def signup():
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.DBsession.add(new_user)
-        db.DBsession.commit()
+        db.session.add(new_user)
+        db.session.commit()
 
-        return '<h1>New user has been created!</h1>'
+        return redirect(url_for('login'))
         #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
 
@@ -152,7 +167,7 @@ def signup():
 #@login_required
 def recommend():
     my_movie_list = []
-    result = [r.TITLE for r in DBsession.query(Movie).all()]
+    result = [r.TITLE for r in Movie.query.all()]
     for r in result:
         r = r.replace(',', '')
         my_movie_list.append(r)
@@ -175,7 +190,7 @@ def process():
     req = request.get_json()   #gets userInputedmovies from recommend page
     print(req)
     for i,val in enumerate(req):
-        for instance in DBsession.query(Movie).filter(Movie.TITLE == val):
+        for instance in Movie.query.filter_by(TITLE = val):
             genreList.append(instance.GENRE)
     print(genreList)
     
@@ -191,7 +206,7 @@ def process():
     #iterate over newGenreList to get movie posters for movies with listed genres 
     for i, val in enumerate(newGenreList):
         print(val)
-        for instance in DBsession.query(Movie).filter(Movie.GENRE.contains(val)):
+        for instance in Movie.query.filter(Movie.GENRE.contains(val)):
             recMovieList.append(instance.POSTER)
     
     print(recMovieList)
