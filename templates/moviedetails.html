@@ -1,6 +1,8 @@
 {% extends "template.html" %}
 {% block title%}
-<h2 align="center">TITLE FROM DB</h2>
+<h2 align="center">
+	{{ Movie.TITLE }}
+</h2>
 {% endblock %}
 
 {% block movies %}
@@ -9,7 +11,26 @@
       <td><img src="static/images/jaws.jpg" height="250" width="250"></td>
       <td>
       	<table>
-      		<td></td>
+      		<tr>
+      			<td>
+      				{{ Movie.RELEASE_DATE}}
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				{{ Movie.GENRE }}
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				{{ Movie.IMBD_LINK }}
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				{{ Movie.DESCRIPTION }}
+      			</td>
+      		</tr>
       	</table>
       </td>
     </tr>
