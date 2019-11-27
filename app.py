@@ -108,7 +108,7 @@ def  movie(movieId):
     return render_template("movie.html", data = all_movie_elements)
 
 
-    
+  #sfsdf   
 
 @app.route("/")
 def home():
