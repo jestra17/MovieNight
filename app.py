@@ -14,13 +14,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_login import current_user
 import logging
+import random
 app = Flask(__name__)
 
 url = ""
 
-
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = False 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///MovieNight_API_DATABASE/MovieDB.db'
 
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
@@ -31,16 +33,28 @@ login_manager.login_view = 'login'
 #Connecting MovieDatabase to sqlalchemy
 #using reflection of database
 
-engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
-DBsession = sessionmaker(bind=engine)()
-Base = declarative_base()
-#movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)
+#engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
+#DBsession = sessionmaker(bind=engine)()
+#Base = declarative_base()
+#movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)'
 
-class Movie(Base):
+bootstrap = Bootstrap(app)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+UserWatched_table = db.Table('UserWatched', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
+)
+UserWantsToWatch_table = db.Table('UserWantsToWatch', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
+)
+
+class Movie(db.Model):
     __tablename__ = "MovieTB"
-    #adds Movie Table to db
-    #see https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
-    #for details about this process
     ID = db.Column(Integer, primary_key = True)
     TITLE = db.Column(String)
     GENRE = db.Column(String)
@@ -66,9 +80,12 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
-    #for debugging in python environment
-    def __repr__(self):
-        return '<User %r>' % self.username
+    moviesWatched = db.relationship("Movie",
+                               secondary=UserWatched_table)
+    moviesWantToWatch = db.relationship("Movie",
+                               secondary=UserWantsToWatch_table)
+
+db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -106,11 +123,11 @@ def  movie(movieId):
 @app.route("/")
 def home():
     data =[]
-    result = [r.POSTER for r in DBsession.query(Movie).all()]
+    result = [r.POSTER for r in Movie.query.all()]
 
     myPosterUrls = []
-    img_url = [r.POSTER for r in DBsession.query(Movie).all()]
-    img_id = [r.ID for r in DBsession.query(Movie).all()]
+    img_url = [r.POSTER for r in Movie.query.all()]
+    img_id = [r.ID for r in Movie.query.all()]
     data = [(id, url) for url,id in zip(img_url, img_id)]
     
     if current_user.is_authenticated:
@@ -142,10 +159,10 @@ def signup():
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.DBsession.add(new_user)
-        db.DBsession.commit()
+        db.session.add(new_user)
+        db.session.commit()
 
-        return home()
+        return redirect(url_for('login'))
         #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
 
@@ -160,23 +177,17 @@ def moviedetails():
 #@login_required
 def recommend():
     my_movie_list = []
-    result = [r.TITLE for r in DBsession.query(Movie).all()]
+    result = [r.TITLE for r in Movie.query.all()]
     for r in result:
         r = r.replace(',', '')
         my_movie_list.append(r)
     list_len = len(my_movie_list)
 
 
-# session.pop('movie_list')  # this is supposed to delete the list of urls when we return to the home page
     return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len)
 #name=current_user.username goes in return for recc commented out for editing purpose
 
 
-@app.route("/recMovies")
-def recMovies(): 
-    data = []
-    data = session.get('movie_list')
-    return render_template("recMovies.html",data=data)
 
 @app.route("/process", methods = ['POST'])
 def process():
@@ -184,11 +195,12 @@ def process():
     genreList = []
     recMovieList= []
     newGenreList =[]
+    randomMovies= []
     
     req = request.get_json()   #gets userInputedmovies from recommend page
     print(req)
     for i,val in enumerate(req):
-        for instance in DBsession.query(Movie).filter(Movie.TITLE == val):
+        for instance in Movie.query.filter_by(TITLE = val):
             genreList.append(instance.GENRE)
     print(genreList)
     
@@ -200,19 +212,19 @@ def process():
     newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
     print(newGenreList)
 
+  
     #iterate over newGenreList to get movie posters for movies with listed genres 
     for i, val in enumerate(newGenreList):
-        for instance in DBsession.query(Movie).filter(Movie.GENRE.like(val)):
+        print(val)
+        for instance in Movie.query.filter(Movie.GENRE.contains(val)):
             recMovieList.append(instance.POSTER)
     
-  #  print(recMovieList)
-    session['movie_list'] = recMovieList
-    print(session['movie_list'])
-    #for i, val in enumerate(session['movie_list']):
-     #   print(val)
-     #this redirect 
-     # doesnt even work
-    return redirect('recMovies')
+    print(recMovieList)
+    recMovieList = list(set(recMovieList))
+    randomMovies = random.sample(recMovieList, 51)
+    session['movie_list'] = randomMovies
+    res = make_response(jsonify(recMovieList,200))
+    return res
 
 
 
