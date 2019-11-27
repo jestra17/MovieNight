@@ -57,15 +57,15 @@ class Movie(db.Model):
     STATUS = db.Column(String)
     IMDB_LINK = db.Column(String)
 
-    def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
-        self.ID= ID
-        self.TITLE = TITLE
-        self.GENRE = GENRE
-        self.DESCRIPTION = DESCRIPTION
-        self.POSTER = POSTER
-        self.RELEASE_DATE = RELEASE_DATE
-        self.STATUS = STATUS
-        self.IMDB_LINK = IMBD_LINK
+    #def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
+    #    self.ID= ID
+    #    self.TITLE = TITLE
+    #    self.GENRE = GENRE
+    #    self.DESCRIPTION = DESCRIPTION
+    #    self.POSTER = POSTER
+    #    self.RELEASE_DATE = RELEASE_DATE
+    #    self.STATUS = STATUS
+    #    self.IMDB_LINK = IMBD_LINK
 
 
 class User(UserMixin, db.Model):
@@ -74,9 +74,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
     moviesWatched = db.relationship("Movie",
-                               secondary=UserWatched_table)
+                               secondary=UserWatched_table, lazy='dynamic')
     moviesWantToWatch = db.relationship("Movie",
-                               secondary=UserWantsToWatch_table)
+                               secondary=UserWantsToWatch_table, lazy='dynamic')
 
 db.create_all()
 
@@ -108,23 +108,23 @@ def  movie(movieId):
     return render_template("movie.html", data = all_movie_elements)
 
 
-
-
-
     
 
 @app.route("/")
 def home():
     data =[]
     result = [r.POSTER for r in Movie.query.all()]
-
-    myPosterUrls = []
     img_url = [r.POSTER for r in Movie.query.all()]
     img_id = [r.ID for r in Movie.query.all()]
     data = [(id, url) for url,id in zip(img_url, img_id)]
     
     if current_user.is_authenticated:
-         return render_template("userHome.html",myPosterUrls = img_url, img_id = img_id)
+         user = current_user
+         userFavorites = user.moviesWantToWatch.all()
+         userWatched = user.moviesWatched.all()
+         fav_url = [r.POSTER for r in userFavorites]
+         watched_url = [r.POSTER for r in userWatched]
+         return render_template("userHome.html",myFavoriteMovies = fav_url, myWatchedMovies = watched_url)
     else:
          return render_template("home.html",data=data,img_id = img_id)
 
@@ -164,7 +164,7 @@ def signup():
 
 
 @app.route("/recommend")
-#@login_required
+@login_required
 def recommend():
     my_movie_list = []
     result = [r.TITLE for r in Movie.query.all()]
@@ -174,7 +174,7 @@ def recommend():
     list_len = len(my_movie_list)
 
 
-    return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len)
+    return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len, name= current_user.username)
 #name=current_user.username goes in return for recc commented out for editing purpose
 
 
@@ -216,7 +216,29 @@ def process():
     res = make_response(jsonify(recMovieList,200))
     return res
 
+@app.route("/favoriteMovie", methods = ['POST'])
+def favoriteMovie():
+    movieURL = request.get_json()
+    movie= Movie.query.filter(Movie.POSTER == movieURL).first()
+    user = current_user
+    user.moviesWantToWatch.append(movie)
+    db.session.add(user)
+    db.session.commit()
+    
+        
+    return url
 
+@app.route("/watchedMovie", methods = ['POST'])
+def watchedMovie():
+    movieURL = request.get_json()
+    movie = Movie.query.filter(Movie.POSTER == movieURL).first()
+    user = current_user
+    user.moviesWatched.append(movie)
+    db.session.add(user)
+    db.session.commit()
+    
+        
+    return url
 
 @app.route('/logout')
 @login_required

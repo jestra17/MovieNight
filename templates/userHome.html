@@ -14,24 +14,32 @@
 </div>
 <script>
   console.log("injs");
-  var ms= '{{myPosterUrls|tojson}}';
+  var moviesWatched= '{{myWatchedMovies|tojson}}';
+  var moviesFavorited = '{{myFavoriteMovies|tojson}}';
   var mainDiv1 = document.getElementById('myWatchedList');
   var mainDiv2 = document.getElementById('myToWatchList');
-  var m= ms.split(",");
-  var list_len = m.length;
-  for(i=0; i< list_len; i++){
-  m[i] = m[i].replace(/[\[\]"]+/g,'');
+  var moviesWatchedFormatted= moviesWatched.split(",");
+  var moviesFavoritedFormatted = moviesFavorited.split(",");
+  var list_lenFavorite = moviesFavoritedFormatted.length;
+  var list_lenWatched = moviesWatchedFormatted.length;
+  for(i=0; i< list_lenWatched; i++){
+  moviesWatchedFormatted[i] = moviesWatchedFormatted[i].replace(/[\[\]"]+/g,'');
   var innerIMGWatched= document.createElement('img');
-  var innerIMGtoWatch= document.createElement('img');
-  innerIMGWatched.src= m[i]
-  innerIMGtoWatch.src = m[i];
+  innerIMGWatched.src= moviesWatchedFormatted[i]
   mainDiv1.appendChild(innerIMGWatched);
+  }
+  for(i=0; i< list_lenFavorite; i++){
+  moviesFavoritedFormatted[i] = moviesFavoritedFormatted[i].replace(/[\[\]"]+/g,'');
+  var innerIMGtoWatch= document.createElement('img');
+  innerIMGtoWatch.src = moviesFavoritedFormatted[i];
   mainDiv2.appendChild(innerIMGtoWatch);
   }
 
+
   $(document).ready(function(){
   $('.owl-carousel').owlCarousel({
-    loop:true,
+    //loop:true,
+    loop:false,
     margin:10,
     nav:true,
     responsive:{
