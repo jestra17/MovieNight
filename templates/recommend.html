@@ -47,7 +47,6 @@ var tags9 = $('#tagtacular_9').tagtacular({
   var input = {
     userInputtedMovies : userInputtedMovies.value
   };
-  
 
   fetch(`${window.origin}/process`,{
     method: "POST",
@@ -74,14 +73,37 @@ var tags9 = $('#tagtacular_9').tagtacular({
       })
 
    })
-
-
-
-  //redirects page to recMovies page
- // window.location="/recMovies";
-       
-
   }
+
+  function favoriteButtonClicked(url){
+    console.log("url is ")
+    console.log(url)
+
+    fetch(`${window.origin}/favoriteMovie`,{
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(url),
+    cache: "no-cache",
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+    })
+};
+
+function checkButtonClicked(url){
+    console.log("url is ")
+    console.log(url)
+
+    fetch(`${window.origin}/watchedMovie`,{
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(url),
+    cache: "no-cache",
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+    })
+}
 
 
 </script>
@@ -101,6 +123,35 @@ var tags9 = $('#tagtacular_9').tagtacular({
     img:hover{
        transform: translateY(-10px);
      }
+
+     .button {
+      position: absolute;
+      bottom: 0%;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+
+    #heart{
+      right:50%;
+    }
+
+    #checkmark{
+      left: 50%;
+    }
+
+
+    .button a {
+      width: 200px;
+      padding: 12px 48px;
+      text-align: center;
+      color: white;
+      border: solid 2px white;
+      z-index: 1;
+    }
+
+    .col-md-4:hover .button {
+      opacity: 1;
+    }
     
 </style>
 
@@ -108,12 +159,37 @@ var tags9 = $('#tagtacular_9').tagtacular({
 {% for url in session['movie_list'] %}
 {% if loop.index == 1 %}
 <div class="row">
-    <div class="col-md-4"><img src={{url}}></div>
+    <div class="col-md-4">
+      <img src={{url}}>
+      <button class="button" id="heart" value={{url}} onclick="favoriteButtonClicked(this.value)" >
+          <i class="fa fa-heart fa-3x"></i>
+      </button>
+      <button class="button" id="checkmark" value={{url}} onclick="checkButtonClicked(this.value)">
+        <i class="fa fa-check-square fa-3x"></i>
+    </button>
+    </div>
+
 {% elif loop.index is divisibleby 3  %}
 <div class="row">
- <div class="col-md-4"><img src={{url}}></div> </div>
+ <div class="col-md-4">
+   <img src={{url}}>
+   <button class="button" id="heart" value= {{url}} onclick="favoriteButtonClicked(this.value)">
+      <i class="fa fa-heart fa-3x"></i>
+  </button>
+  <button class="button" id="checkmark" value={{url}} onclick="checkButtonClicked(this.value)">
+    <i class="fa fa-check-square fa-3x"></i>
+</button>
+  </div> </div>
 {% else %}
-    <div class="col-md-4"><img src={{url}}></div>
+    <div class="col-md-4">
+      <img src={{url}}>
+      <button class="button" id="heart" value={{url}} onclick="favoriteButtonClicked(this.value)">
+          <i class="fa fa-heart fa-3x"></i>
+      </button>
+      <button class="button" id="checkmark" value={{url}} onclick="checkButtonClicked(this.value)" >
+        <i class="fa fa-check-square fa-3x"></i>
+    </button>
+    </div>
   {% endif %}
   
 
