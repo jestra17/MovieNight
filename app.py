@@ -38,16 +38,11 @@ login_manager.login_view = 'login'
 #Base = declarative_base()
 #movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)'
 
-bootstrap = Bootstrap(app)
-db = SQLAlchemy(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
 UserWatched_table = db.Table('UserWatched', db.Model.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
 )
+
 UserWantsToWatch_table = db.Table('UserWantsToWatch', db.Model.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
