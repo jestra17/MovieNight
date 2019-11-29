@@ -1,34 +1,35 @@
 {% extends "template.html" %}
 {% block title%}
-<h2 align="center">
-	{{ Movie.TITLE }}
+<h2>
+		<span style="color:salmon;">{{movieInfo[0]}}</span>
 </h2>
 {% endblock %}
 
 {% block movies %}
 <table cellspacing="20">
     <tr>
-      <td><img src="static/images/jaws.jpg" height="250" width="250"></td>
+      <td><img src={{movieInfo[5]}}></td>
       <td>
       	<table>
       		<tr>
       			<td>
-      				{{ Movie.RELEASE_DATE}}
+      				<p style="font-size:medium;color: white;"><span style="color:salmon;"> Release Date: </span>{{movieInfo[1]}}</p>
       			</td>
       		</tr>
       		<tr>
       			<td>
-      				{{ Movie.GENRE }}
+					  <p style="font-size:medium;"><span style="color:salmon;">Genre: </span> <span style="color:white;">
+						{{movieInfo[2]}}</span></p>
       			</td>
       		</tr>
       		<tr>
       			<td>
-      				{{ Movie.IMBD_LINK }}
+      				<p style="font-size:medium;color: white;"><a href={{movieInfo[3]}}>Movie info and Trailer</a></p>
       			</td>
       		</tr>
       		<tr>
       			<td>
-      				{{ Movie.DESCRIPTION }}
+      				<p style="font-size:medium;color: white;"><span style="color:salmon;">Description:</span> {{movieInfo[4]}}</p>
       			</td>
       		</tr>
       	</table>

@@ -56,18 +56,6 @@ class Movie(db.Model):
     RELEASE_DATE = db.Column(String)
     STATUS = db.Column(String)
     IMDB_LINK = db.Column(String)
-
-    #def __init__(self, ID, TITLE, DESCRIPTION, POSTER, RELEASE_DATE, STATUS, IMBD_LINK):
-    #    self.ID= ID
-    #    self.TITLE = TITLE
-    #    self.GENRE = GENRE
-    #    self.DESCRIPTION = DESCRIPTION
-    #    self.POSTER = POSTER
-    #    self.RELEASE_DATE = RELEASE_DATE
-    #    self.STATUS = STATUS
-    #    self.IMDB_LINK = IMBD_LINK
-
-
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
@@ -100,20 +88,22 @@ class RegisterForm(FlaskForm):
 
 ##### Babak's working on it
 
-@app.route("/movie/<movieId>",methods=['GET'])
-def  movie(movieId):
-    all_movie_elements = query = session.query(Movie).order_by(Movie.ID)
-
-
-    return render_template("movie.html", data = all_movie_elements)
-
-
-  #sfsdf   
+@app.route("/moviedetails",methods=['GET'])
+def  moviedetails():
+    id = request.args.get('id')
+    movieInfo= []
+    for item in Movie.query.filter(Movie.ID == id):
+            movieInfo.append((item.TITLE).upper())
+            movieInfo.append(item.RELEASE_DATE)
+            movieInfo.append(item.GENRE)
+            movieInfo.append(item.IMDB_LINK)
+            movieInfo.append(item.DESCRIPTION)
+            movieInfo.append(item.POSTER)
+    return render_template("moviedetails.html",movieInfo = movieInfo)
 
 @app.route("/")
 def home():
     data =[]
-    result = [r.POSTER for r in Movie.query.all()]
     img_url = [r.POSTER for r in Movie.query.all()]
     img_id = [r.ID for r in Movie.query.all()]
     data = [(id, url) for url,id in zip(img_url, img_id)]
@@ -141,8 +131,6 @@ def login():
                 return redirect(url_for('recommend'))
 
         return '<h1>Invalid username or password</h1>'
-        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
-
 
     return render_template("login.html",form=form)
 
@@ -188,11 +176,9 @@ def process():
     randomMovies= []
     
     req = request.get_json()   #gets userInputedmovies from recommend page
-    print(req)
     for i,val in enumerate(req):
         for instance in Movie.query.filter_by(TITLE = val):
             genreList.append(instance.GENRE)
-    print(genreList)
     
     #iterate over genreList
     for i, val in enumerate(genreList): #iterate over genreList pulling out each value
@@ -200,16 +186,13 @@ def process():
          for i, val in enumerate(tempList): # pull each value of newly separated list
             newGenreList.append(val)        #append to new genreList 
     newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
-    print(newGenreList)
 
   
     #iterate over newGenreList to get movie posters for movies with listed genres 
     for i, val in enumerate(newGenreList):
-        print(val)
         for instance in Movie.query.filter(Movie.GENRE.contains(val)):
             recMovieList.append(instance.POSTER)
     
-    print(recMovieList)
     recMovieList = list(set(recMovieList))
     randomMovies = random.sample(recMovieList, 51)
     session['movie_list'] = randomMovies
@@ -237,7 +220,7 @@ def watchedMovie():
     db.session.add(user)
     db.session.commit()
     
-        
+
     return url
 
 @app.route('/logout')
