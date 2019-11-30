@@ -188,14 +188,17 @@ def process():
     newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
 
   
-    #iterate over newGenreList to get movie posters for movies with listed genres 
     for i, val in enumerate(newGenreList):
         for instance in Movie.query.filter(Movie.GENRE.contains(val)):
             recMovieList.append(instance.POSTER)
     
     recMovieList = list(set(recMovieList))
-    randomMovies = random.sample(recMovieList, 51)
-    session['movie_list'] = randomMovies
+    if len(recMovieList)<=51:
+        session['movie_list'] = recMovieList
+    else:
+        randomMovies = random.sample(recMovieList, 51)
+        session['movie_list'] = randomMovies
+
     res = make_response(jsonify(recMovieList,200))
     return res
 
