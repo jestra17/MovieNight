@@ -13,15 +13,15 @@ class FlaskTestCase(unittest.TestCase):
 	def test_login_page_loads(self):
 		tester = app.test_client(self)
 		response = tester.get('/login', content_type='html/text')
-		self.assertTrue('Please sign in' in response.data)
+		self.assertTrue((b'Please sign in') in response.data)
 
 	#Ensure that the login behaves given incorrect credentials
 	def test_login_incorrect_login(self):
 		tester = app.test_client(self)
 		response = tester.post('/login', 
-			data=dict(username="joezanini", password="12345678"),
+			data=dict(username="justanna", password="1234568"),
 			follow_redirects=True)
-		self.assertIn('Invalid username or password' in response.data)
+		self.assertIn(b'Field must be between 8 and 80 characters long.', response.data)
 
 
 
