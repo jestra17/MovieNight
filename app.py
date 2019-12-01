@@ -86,7 +86,7 @@ class RegisterForm(FlaskForm):
 
 
 
-##### Babak's working on it
+
 
 @app.route("/moviedetails",methods=['GET'])
 def  moviedetails():
