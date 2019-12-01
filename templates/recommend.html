@@ -13,16 +13,15 @@
 
 </div>
 <script type="text/javascript">
-var userInputtedMovies=[];
 
+//autocomplete
 var myMovieArrayString = '{{my_movie_list|tojson}}';
 var myMovieArray= myMovieArrayString.split(",");
 var lengthOfMovieArray = '{{list_len}}';
 for(i=0; i< lengthOfMovieArray; i++){
   myMovieArray[i] = myMovieArray[i].replace(/[\[\]"]+/g,'');
-  console.log(myMovieArray[i]);
 }
-
+//tagtacular plugin
 var tags9 = $('#tagtacular_9').tagtacular({
 		entityId: 109,
     entityTags: [],
@@ -34,20 +33,17 @@ var tags9 = $('#tagtacular_9').tagtacular({
     configShowSwitchButton: false,
   });
 
-  function processMovies(){
-  
+
+var userInputtedMovies=[];
+
+//process user inputted movies and retrieve reccomendations
+function processMovies(){
   sessionStorage.setItem('movie_list','')
-
-    
-  var p = document.createElement("p");
-  p.innerHTML = JSON.stringify(tags9.getEntityTags());
-  document.body.appendChild(p);
-
   userInputtedMovies=tags9.getEntityTags();
   var input = {
     userInputtedMovies : userInputtedMovies.value
   };
-
+ 
   fetch(`${window.origin}/process`,{
     method: "POST",
     credentials: "include",
@@ -57,54 +53,37 @@ var tags9 = $('#tagtacular_9').tagtacular({
         "content-type": "application/json"
     })
   })
-   .then(function(response){
-
+  .then(function(response){
       if (response.status !== 200 ){
         console.log(`Response was not 200:' ${response.status}`);
         return ; 
       }
-
       response.json().then(function (data){
-              
-      
       location.reload();
       returnedMovies = JSON.stringify(data);
-
       })
-
    })
   }
 
-  function favoriteButtonClicked(url){
-    console.log("url is ")
-    console.log(url)
-
-    fetch(`${window.origin}/favoriteMovie`,{
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify(url),
-    cache: "no-cache",
-    headers: new Headers({
-      "content-type": "application/json"
-    })
-    })
-};
-
-function checkButtonClicked(url){
-    console.log("url is ")
-    console.log(url)
-
-    fetch(`${window.origin}/watchedMovie`,{
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify(url),
-    cache: "no-cache",
-    headers: new Headers({
-      "content-type": "application/json"
-    })
-    })
+function favoriteButtonClicked(url){
+  sendingInfoToPythonFile(url, "favoriteMovie")
 }
 
+function checkButtonClicked(url){
+  sendingInfoToPythonFile(url, "watchedMovie")
+}
+
+function sendingInfoToPythonFile(data, route){
+  fetch(`${window.origin}/${route}`,{
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    headers: new Headers({
+        "content-type": "application/json"
+    })
+  })
+}
 
 </script>
 </div>
@@ -151,8 +130,7 @@ function checkButtonClicked(url){
 
     .col-md-4:hover .button {
       opacity: 1;
-    }
-    
+    }    
 </style>
 
    

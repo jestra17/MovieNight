@@ -23,20 +23,13 @@ app.config['SESSION_PERMANENT'] = False
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///MovieNight_API_DATABASE/MovieDB.db'
 
-#Connecting MovieDatabase to sqlalchemy
-#using reflection of database
-
-#engine = create_engine('sqlite:///MovieNight_API_DATABASE/MovieDB.db',connect_args={'check_same_thread': False})
-#DBsession = sessionmaker(bind=engine)()
-#Base = declarative_base()
-#movies = Table('MovieTB', metadata, autoload = True, autoload_with=engine)'
-
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+#Association Tables
 UserWatched_table = db.Table('UserWatched', db.Model.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('MovieTB_ID', db.Integer, db.ForeignKey('MovieTB.ID'))
@@ -86,8 +79,6 @@ class RegisterForm(FlaskForm):
 
 
 
-
-
 @app.route("/moviedetails",methods=['GET'])
 def  moviedetails():
     id = request.args.get('id')
@@ -103,7 +94,7 @@ def  moviedetails():
 
 @app.route("/")
 def home():
-    data =[]
+    #data =[]
     img_url = [r.POSTER for r in Movie.query.all()]
     img_id = [r.ID for r in Movie.query.all()]
     data = [(id, url) for url,id in zip(img_url, img_id)]
@@ -116,13 +107,12 @@ def home():
          watched_url = [r.POSTER for r in userWatched]
          return render_template("userHome.html",myFavoriteMovies = fav_url, myWatchedMovies = watched_url)
     else:
-         return render_template("home.html",data=data,img_id = img_id)
+         return render_template("home.html",data=data)
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-   
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
@@ -145,8 +135,6 @@ def signup():
         db.session.commit()
 
         return redirect(url_for('login'))
-        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
-
 
     return render_template("signup.html",form=form)
 
@@ -154,15 +142,14 @@ def signup():
 @app.route("/recommend")
 @login_required
 def recommend():
-    my_movie_list = []
-    result = [r.TITLE for r in Movie.query.all()]
-    for r in result:
-        r = r.replace(',', '')
-        my_movie_list.append(r)
+    #movie list for autcomplete
+    my_movie_list = [] 
+    allMovieTitles = [r.TITLE for r in Movie.query.all()]
+    for title in allMovieTitles:
+        title = title.replace(',', '')
+        my_movie_list.append(title)
     list_len = len(my_movie_list)
-    return render_template("recommend.html", my_movie_list = my_movie_list, name= current_user.username,list_len= list_len )
-#name=current_user.username goes in return for recc commented out for editing purpose
-
+    return render_template("recommend.html", my_movie_list = my_movie_list,list_len= list_len )
 
 
 @app.route("/process", methods = ['POST'])
@@ -203,18 +190,16 @@ def process():
         session['movie_list'] = randomMovies
     res = make_response(jsonify(recMovieList,200))
 
-    return res
+    return res  
 
 @app.route("/favoriteMovie", methods = ['POST'])
 def favoriteMovie():
     movieURL = request.get_json()
-    movie= Movie.query.filter(Movie.POSTER == movieURL).first()
+    movie = Movie.query.filter(Movie.POSTER == movieURL).first()
     user = current_user
     user.moviesWantToWatch.append(movie)
     db.session.add(user)
     db.session.commit()
-    
-        
     return url
 
 @app.route("/watchedMovie", methods = ['POST'])
@@ -225,8 +210,6 @@ def watchedMovie():
     user.moviesWatched.append(movie)
     db.session.add(user)
     db.session.commit()
-    
-
     return url
 
 @app.route('/logout')
@@ -237,3 +220,6 @@ def logout():
     
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+

@@ -19,29 +19,10 @@ h4{
 <div class="owl-carousel owl-theme" id="myToWatchList">
 </div>
 <script>
-  console.log("injs");
   var moviesWatched= '{{myWatchedMovies|tojson}}';
   var moviesFavorited = '{{myFavoriteMovies|tojson}}';
-  var mainDiv1 = document.getElementById('myWatchedList');
-  var mainDiv2 = document.getElementById('myToWatchList');
-  var moviesWatchedFormatted= moviesWatched.split(",");
-  var moviesFavoritedFormatted = moviesFavorited.split(",");
-  var list_lenFavorite = moviesFavoritedFormatted.length;
-  var list_lenWatched = moviesWatchedFormatted.length;
-  for(i=0; i< list_lenWatched; i++){
-  moviesWatchedFormatted[i] = moviesWatchedFormatted[i].replace(/[\[\]"]+/g,'');
-  var innerIMGWatched= document.createElement('img');
-  innerIMGWatched.src= moviesWatchedFormatted[i]
-  mainDiv1.appendChild(innerIMGWatched);
-  }
-  for(i=0; i< list_lenFavorite; i++){
-  moviesFavoritedFormatted[i] = moviesFavoritedFormatted[i].replace(/[\[\]"]+/g,'');
-  var innerIMGtoWatch= document.createElement('img');
-  innerIMGtoWatch.src = moviesFavoritedFormatted[i];
-  mainDiv2.appendChild(innerIMGtoWatch);
-  }
-
-
+  carouselCreation(moviesWatched, 'myWatchedList');
+  carouselCreation(moviesFavorited, 'myToWatchList')
   $(document).ready(function(){
   $('.owl-carousel').owlCarousel({
     //loop:true,
@@ -61,6 +42,19 @@ h4{
     }
 })
 });
+
+function carouselCreation(movieList, elementID){
+    var mainDiv = document.getElementById(elementID);
+    var formattedMovieList = movieList.split(",");
+    var movieListLength = formattedMovieList.length;
+    for(i = 0; i < movieListLength; i++){
+        formattedMovieList[i] = formattedMovieList[i].replace(/[\[\]"]+/g,'');
+        var innerIMG= document.createElement('img');
+        innerIMG.src= formattedMovieList[i]
+        mainDiv.appendChild(innerIMG);
+    }
+}
+
 </script>
 
 {% endblock %}
