@@ -160,11 +160,13 @@ function checkButtonClicked(url){
 {% if loop.index == 1 %}
 <div class="row">
     <div class="col-md-4">
-      <img src={{url}}>
-      <button class="button" id="heart" value={{url}} onclick="favoriteButtonClicked(this.value)" >
+      <a href=moviedetails?id={{url[0]}}>
+        <img src={{url[1]}}>
+      </a>
+      <button class="button" id="heart" value={{url[1]}} onclick="favoriteButtonClicked(this.value)" >
           <i class="fa fa-heart fa-3x"></i>
       </button>
-      <button class="button" id="checkmark" value={{url}} onclick="checkButtonClicked(this.value)">
+      <button class="button" id="checkmark" value={{url[1]}} onclick="checkButtonClicked(this.value)">
         <i class="fa fa-check-square fa-3x"></i>
     </button>
     </div>
@@ -172,21 +174,25 @@ function checkButtonClicked(url){
 {% elif loop.index is divisibleby 3  %}
 <div class="row">
  <div class="col-md-4">
-   <img src={{url}}>
-   <button class="button" id="heart" value= {{url}} onclick="favoriteButtonClicked(this.value)">
+    <a href=moviedetails?id={{url[0]}}>
+      <img src={{url[1]}}>
+    </a>
+   <button class="button" id="heart" value= {{url[1]}} onclick="favoriteButtonClicked(this.value)">
       <i class="fa fa-heart fa-3x"></i>
   </button>
-  <button class="button" id="checkmark" value={{url}} onclick="checkButtonClicked(this.value)">
+  <button class="button" id="checkmark" value={{url[1]}} onclick="checkButtonClicked(this.value)">
     <i class="fa fa-check-square fa-3x"></i>
 </button>
   </div> </div>
 {% else %}
     <div class="col-md-4">
-      <img src={{url}}>
-      <button class="button" id="heart" value={{url}} onclick="favoriteButtonClicked(this.value)">
+        <a href=moviedetails?id={{url[0]}}>
+          <img src={{url[1]}}>
+        </a>
+      <button class="button" id="heart" value={{url[1]}} onclick="favoriteButtonClicked(this.value)">
           <i class="fa fa-heart fa-3x"></i>
       </button>
-      <button class="button" id="checkmark" value={{url}} onclick="checkButtonClicked(this.value)" >
+      <button class="button" id="checkmark" value={{url[1]}} onclick="checkButtonClicked(this.value)" >
         <i class="fa fa-check-square fa-3x"></i>
     </button>
     </div>

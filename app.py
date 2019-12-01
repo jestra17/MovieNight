@@ -160,9 +160,7 @@ def recommend():
         r = r.replace(',', '')
         my_movie_list.append(r)
     list_len = len(my_movie_list)
-
-
-    return render_template("recommend.html", my_movie_list = my_movie_list, list_len= list_len, name= current_user.username)
+    return render_template("recommend.html", my_movie_list = my_movie_list, name= current_user.username,list_len= list_len )
 #name=current_user.username goes in return for recc commented out for editing purpose
 
 
@@ -187,19 +185,24 @@ def process():
             newGenreList.append(val)        #append to new genreList 
     newGenreList= list(set(newGenreList))  #remove duplicates from newGenrelist
 
-  
+    recMovieListID = []
     for i, val in enumerate(newGenreList):
         for instance in Movie.query.filter(Movie.GENRE.contains(val)):
+            recMovieListID.append(instance.ID)
+        
+    for i, val in enumerate(recMovieListID):
+        for instance in Movie.query.filter(Movie.ID == val):
             recMovieList.append(instance.POSTER)
-    
-    recMovieList = list(set(recMovieList))
-    if len(recMovieList)<=51:
-        session['movie_list'] = recMovieList
-    else:
-        randomMovies = random.sample(recMovieList, 51)
-        session['movie_list'] = randomMovies
 
+    data = [(id, url) for url, id in zip(recMovieList, recMovieListID)]
+    data = list(set(data))   
+    if len(data)<=6:
+        session['movie_list'] = data
+    else:
+        randomMovies = random.sample(data, 6)
+        session['movie_list'] = randomMovies
     res = make_response(jsonify(recMovieList,200))
+
     return res
 
 @app.route("/favoriteMovie", methods = ['POST'])
